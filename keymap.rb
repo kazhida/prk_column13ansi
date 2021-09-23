@@ -7,39 +7,58 @@ end
 kbd = Keyboard.new
 
 i2c = I2C.new
-i2c.i2c_init(24, 25)
 
-# Initialize modulo
-kbd.init_modulo(i2c,
-  [
-    TCA9555.new(0x00,
+# QT Py
+# i2c.init(24, 25)
+
+# Pro Micro
+i2c.init(2, 3, 1, 400 * 1000)
+
+# kbd.init_pins(
+#   [ 4, 5, 6, 7 ],            # row0, row1,... respectively
+#   [ 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14 ] # col0, col1,... respectively
+# )
+
+    TCA9555.new(
+      0x00,
       [
         [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], nil, nil,
         [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], nil, nil
       ]
     ),
-    TCA9555.new(0x01,
-      [
-        [0, 6], [0, 7], [0, 8], [0, 9], [0, 10], [0, 11], [0, 12], nil,
-        [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11], nil, nil
-      ]
-    ),
-    TCA9555.new(0x02,
-      [
-        [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], nil, nil,
-        [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], nil, nil, nil
-      ]
-    ),
-    TCA9555.new(0x03,
-      [
-        [2, 6], [2, 7], [2, 8], [2, 9], [2, 10], [2, 11], nil, nil,
-        [3, 6], [3, 7], [3, 8], [3, 9], [3, 10], [3, 11], nil, nil
-      ]
-    )
-  ],
-  13
-)
 
+# Initialize modulo
+kbd.init_modulo(
+  i2c,
+  13,
+  [
+#     TCA9555.new(
+#       0x00,
+#       [
+#         [0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], nil, nil,
+#         [1, 0], [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], nil, nil
+#       ]
+#     ),
+#     TCA9555.new(0x01,
+#       [
+#         [0, 6], [0, 7], [0, 8], [0, 9], [0, 10], [0, 11], [0, 12], nil,
+#         [1, 6], [1, 7], [1, 8], [1, 9], [1, 10], [1, 11], nil, nil
+#       ]
+#     ),
+#     TCA9555.new(0x02,
+#       [
+#         [2, 0], [2, 1], [2, 2], [2, 3], [2, 4], [2, 5], nil, nil,
+#         [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], nil, nil, nil
+#       ]
+#     ),
+#     TCA9555.new(0x03,
+#       [
+#         [2, 6], [2, 7], [2, 8], [2, 9], [2, 10], [2, 11], nil, nil,
+#         [3, 6], [3, 7], [3, 8], [3, 9], [3, 10], [3, 11], nil, nil
+#       ]
+#     )
+  ]
+)
 
 # default layer should be added at first
 kbd.add_layer :default, %i[
@@ -100,8 +119,8 @@ rgb = RGB.new(
 # Set an effect
 #  `nil` or `:off` for turning off, `:breathing` for "color breathing", `:rainbow` for "rainbow snaking"
 # rgb.effect = :rainbow
-# rgb.effect = :breathing
-rgb.effect = :off
+rgb.effect = :breathing
+# rgb.effect = :off
 # Set an action when you input
 #  `nil` or `:off` for turning off
 # rgb.action = :thunder
